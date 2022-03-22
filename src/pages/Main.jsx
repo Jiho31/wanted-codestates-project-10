@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import SearchBar from '../components/SearchBar';
+import SearchListContainer from '../components/SearchListContainer';
 
 function Main(props) {
   return (
@@ -12,32 +13,41 @@ function Main(props) {
           온라인으로 참여하기
         </Title>
         <SearchBar />
+        <SearchListContainer />
       </Container>
     </Body>
   );
 }
 
-const Body = styled.div`
-  width: 100%;
-  height: 100vh;
+const flexLayoutCenter = css`
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  align-items: center;
+`;
+
+const Body = styled.div`
+  ${flexLayoutCenter}
+
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
   background-color: #cae9ff;
 `;
 
 const Container = styled.section`
+  ${flexLayoutCenter}
+
   width: 800px;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Title = styled.h1`
   width: 100%;
   text-align: center;
   font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 20px;
 `;
 
 export default Main;
