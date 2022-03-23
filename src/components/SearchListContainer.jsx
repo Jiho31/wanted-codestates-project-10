@@ -3,40 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as Search } from '../assets/search-icon.svg';
 import ListItem from './ListItem';
 
-const dummyList = [
-  {
-    id: 125,
-    name: "Klatskin's tumor",
-  },
-  {
-    id: 133,
-    name: '간세포암',
-  },
-  {
-    id: 187,
-    name: '갑상선암종',
-  },
-  {
-    id: 335,
-    name: '고환암',
-  },
-  {
-    id: 375,
-    name: '뼈암',
-  },
-  {
-    id: 445,
-    name: '구강암',
-  },
-  {
-    id: 449,
-    name: '치은암',
-  },
-];
-
-function SearchListContainer(props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [keywordList, setKeywordList] = useState(dummyList);
+function SearchListContainer({ isLoading, keywordList }) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef();
 
@@ -80,10 +47,15 @@ function SearchListContainer(props) {
 
   return (
     <Container ref={containerRef}>
-      <Text>{isLoading ? '검색 중..' : '추천 검색어'}</Text>
+      <Text>
+        {isLoading
+          ? '검색 중..'
+          : keywordList.length > 0
+          ? '추천 검색어'
+          : '검색어 없음'}
+      </Text>
       <List>
         {keywordList.map((keyword, idx) => {
-          // console.log(idx);
           return (
             <ListItem
               key={keyword.id}
@@ -98,7 +70,8 @@ function SearchListContainer(props) {
 }
 
 const Container = styled.div`
-  visibility: hidden;
+  // visibility: hidden;
+
   width: 66rem;
   height: auto;
   background-color: #fff;
@@ -122,20 +95,5 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
 `;
-
-// const ListItem = styled.li`
-//   display: flex;
-//   align-items: center;
-//   padding: 1.2rem 0.4rem;
-//   cursor: pointer;
-
-//   svg {
-//     margin-right: 1.5rem;
-//   }
-
-//   :hover {
-//     background-color: #efefef;
-//   }
-// `;
 
 export default SearchListContainer;
