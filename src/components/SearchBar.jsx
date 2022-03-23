@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../assets/search-icon.svg';
 
-function SearchBar(props) {
+function SearchBar({ changeKeyword, keyword }) {
+  const inputRef = useRef();
+
+  const inputChangeHandler = (e) => {
+    console.log(e.target.value);
+
+    changeKeyword(e.target.value);
+  };
+
   return (
     <Container>
       <div>
         <InputWrapper>
           <SearchIcon fill="#32383E" />
-          <SearchInput type="text" placeholder="질환명을 입력해 주세요." />
+          <SearchInput
+            ref={inputRef}
+            value={keyword}
+            onChange={inputChangeHandler}
+            type="text"
+            placeholder="질환명을 입력해 주세요."
+          />
         </InputWrapper>
         <SearchButton>검색</SearchButton>
       </div>
