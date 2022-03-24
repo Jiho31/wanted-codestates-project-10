@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Search } from '../assets/search-icon.svg';
 import ListItem from './ListItem';
 
 function SearchListContainer({ isLoading, keywordList }) {
@@ -46,7 +45,7 @@ function SearchListContainer({ isLoading, keywordList }) {
   useEffect(() => {}, [activeIndex]);
 
   return (
-    <Container ref={containerRef}>
+    <Container className="search-list-container" ref={containerRef}>
       <Text>
         {isLoading
           ? '검색 중..'
@@ -61,6 +60,8 @@ function SearchListContainer({ isLoading, keywordList }) {
               key={keyword.id}
               keyword={keyword}
               isActive={idx === activeIndex}
+              setActiveIndex={setActiveIndex}
+              index={idx}
             />
           );
         })}
@@ -70,7 +71,7 @@ function SearchListContainer({ isLoading, keywordList }) {
 }
 
 const Container = styled.div`
-  // visibility: hidden;
+  visibility: hidden;
 
   width: 66rem;
   height: auto;

@@ -5,66 +5,56 @@ import SearchListContainer from '../components/SearchListContainer';
 import axios from 'axios';
 import { PROXY } from '../utils/Utils';
 
-const dummyList = [
-  {
-    id: 125,
-    name: "Klatskin's tumor",
-  },
-  {
-    id: 133,
-    name: '간세포암',
-  },
-  {
-    id: 187,
-    name: '갑상선암종',
-  },
-  {
-    id: 335,
-    name: '고환암',
-  },
-  {
-    id: 375,
-    name: '뼈암',
-  },
-  {
-    id: 445,
-    name: '구강암',
-  },
-  {
-    id: 449,
-    name: '치은암',
-  },
-];
-
 function Main(props) {
   const [keyword, setKeyword] = useState('');
   const [recommendedList, setRecommendedList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // api 호출
-  useEffect(() => {
-    const fetchKeywordAPI = async () => {
-      setIsLoading(true);
-      const recommendedKeywords = await axios
-        .get(`${PROXY}/api/v1/search-conditions/?name=${keyword}`)
-        .then((res) => res.data)
-        .then((data) => {
-          console.log(data);
-          return data.slice(0, 8);
-        })
-        .catch((err) => console.error(err));
+  // // api 호출
+  // useEffect(() => {
+  //   const fetchKeywordAPI = async () => {
+  //     setIsLoading(true);
+  //     const recommendedKeywords = await axios
+  //       .get(`${PROXY}/api/v1/search-conditions/?name=${keyword}`)
+  //       .then((res) => res.data)
+  //       .then((data) => {
+  //         console.log(data);
+  //         return data.slice(0, 8);
+  //       })
+  //       .catch((err) => console.error(err));
 
-      setIsLoading(false);
-      setRecommendedList(recommendedKeywords);
-    };
+  //     setIsLoading(false);
+  //     setRecommendedList(recommendedKeywords);
+  //   };
 
-    if (keyword !== '') {
-      fetchKeywordAPI();
+  //   if (keyword !== '') {
+  //     fetchKeywordAPI();
+  //   }
+  // }, [keyword]);
+
+  const fetchKeywordAPI = async (newKeyword) => {
+    setIsLoading(true);
+    const recommendedKeywords = await axios
+      .get(`${PROXY}/api/v1/search-conditions/?name=${newKeyword}`)
+      .then((res) => res.data)
+      .then((data) => {
+        return data.slice(0, 8);
+      })
+      .catch((err) => console.error(err));
+
+    setIsLoading(false);
+    setRecommendedList(recommendedKeywords);
+    console.log('실행');
+  };
+
+  const handleVisibility = (action) => {
+    if (action === 'show') {
+      document.querySelector('.search-list-container').style.visibility =
+        'visible';
+    } else if (action === 'hide') {
+      document.querySelector('.search-list-container').style.visibility =
+        'hidden';
     }
-  }, [keyword]);
-
-  const changeKeyword = (newKeyword) => {
-    setKeyword(newKeyword);
   };
 
   return (
@@ -75,7 +65,14 @@ function Main(props) {
           <br />
           온라인으로 참여하기
         </Title>
-        <SearchBar keyword={keyword} changeKeyword={changeKeyword} />
+        <SearchBar
+          keyword={keyword}
+          setKeyword={setKeyword}
+          fetchKeywordAPI={fetchKeywordAPI}
+          setIsLoading={setIsLoading}
+          setRecommendedList={setRecommendedList}
+          handleVisibility={handleVisibility}
+        />
         <SearchListContainer
           isLoading={isLoading}
           keywordList={recommendedList}
