@@ -3,20 +3,21 @@ import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../assets/search-icon.svg';
 import axios from 'axios';
 import { PROXY } from '../utils/Utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchKeyword, setRecommendedList } from '../modules/search';
 
 const SearchBar = React.memo(function SearchBar({
-  setKeyword,
-  keyword,
   setIsLoading,
-  setRecommendedList,
   handleVisibility,
 }) {
   const inputRef = useRef();
   let timerID;
+  const keyword = useSelector((state) => state.search.keyword);
+  const dispatch = useDispatch();
 
   const inputChangeHandler = (e) => {
     console.log(e.target.value);
-    setKeyword(e.target.value);
+    dispatch(setSearchKeyword(e.target.value));
 
     // 디바운싱 적용한 api 호출 함수 실행 ?
     clearTimeout(timerID);
@@ -30,7 +31,7 @@ const SearchBar = React.memo(function SearchBar({
     setIsLoading(true);
 
     if (newKeyword === '') {
-      setRecommendedList([]);
+      dispatch(setRecommendedList([]));
       setIsLoading(false);
       return;
     }
@@ -44,7 +45,7 @@ const SearchBar = React.memo(function SearchBar({
       .catch((err) => console.error(err));
 
     setIsLoading(false);
-    setRecommendedList(recommendedKeywords);
+    dispatch(setRecommendedList(recommendedKeywords));
     console.log('실행');
   };
 

@@ -2,50 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import SearchListContainer from '../components/SearchListContainer';
-import axios from 'axios';
-import { PROXY } from '../utils/Utils';
 
 function Main(props) {
-  const [keyword, setKeyword] = useState('');
-  const [recommendedList, setRecommendedList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  // // api 호출
-  // useEffect(() => {
-  //   const fetchKeywordAPI = async () => {
-  //     setIsLoading(true);
-  //     const recommendedKeywords = await axios
-  //       .get(`${PROXY}/api/v1/search-conditions/?name=${keyword}`)
-  //       .then((res) => res.data)
-  //       .then((data) => {
-  //         console.log(data);
-  //         return data.slice(0, 8);
-  //       })
-  //       .catch((err) => console.error(err));
-
-  //     setIsLoading(false);
-  //     setRecommendedList(recommendedKeywords);
-  //   };
-
-  //   if (keyword !== '') {
-  //     fetchKeywordAPI();
-  //   }
-  // }, [keyword]);
-
-  const fetchKeywordAPI = async (newKeyword) => {
-    setIsLoading(true);
-    const recommendedKeywords = await axios
-      .get(`${PROXY}/api/v1/search-conditions/?name=${newKeyword}`)
-      .then((res) => res.data)
-      .then((data) => {
-        return data.slice(0, 8);
-      })
-      .catch((err) => console.error(err));
-
-    setIsLoading(false);
-    setRecommendedList(recommendedKeywords);
-    console.log('실행');
-  };
 
   const handleVisibility = (action) => {
     if (action === 'show') {
@@ -66,17 +25,10 @@ function Main(props) {
           온라인으로 참여하기
         </Title>
         <SearchBar
-          keyword={keyword}
-          setKeyword={setKeyword}
-          fetchKeywordAPI={fetchKeywordAPI}
           setIsLoading={setIsLoading}
-          setRecommendedList={setRecommendedList}
           handleVisibility={handleVisibility}
         />
-        <SearchListContainer
-          isLoading={isLoading}
-          keywordList={recommendedList}
-        />
+        <SearchListContainer isLoading={isLoading} />
       </Container>
     </Body>
   );

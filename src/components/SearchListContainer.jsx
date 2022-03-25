@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import ListItem from './ListItem';
+import { useSelector } from 'react-redux';
 
-function SearchListContainer({ isLoading, keywordList }) {
+function SearchListContainer({ isLoading }) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef();
+  const recommendedList = useSelector((state) => state.search.recommendedList);
 
   const keypressEventHandler = (e) => {
     if (activeIndex === -1 && e.key === 'ArrowUp') return;
@@ -20,13 +22,13 @@ function SearchListContainer({ isLoading, keywordList }) {
 
     if (e.key === 'ArrowUp') {
       setActiveIndex((currIdx) => {
-        return currIdx > 0 ? currIdx - 1 : currIdx + keywordList.length - 1;
+        return currIdx > 0 ? currIdx - 1 : currIdx + recommendedList.length - 1;
       });
     } else if (e.key === 'ArrowDown') {
       setActiveIndex((currIdx) => {
-        return currIdx < keywordList.length - 1
+        return currIdx < recommendedList.length - 1
           ? currIdx + 1
-          : currIdx - keywordList.length + 1;
+          : currIdx - recommendedList.length + 1;
       });
     } else if (e.key === 'Enter') {
       console.log('Enter pressed');
@@ -49,12 +51,12 @@ function SearchListContainer({ isLoading, keywordList }) {
       <Text>
         {isLoading
           ? '검색 중..'
-          : keywordList.length > 0
+          : recommendedList.length > 0
           ? '추천 검색어'
           : '검색어 없음'}
       </Text>
       <List>
-        {keywordList.map((keyword, idx) => {
+        {recommendedList.map((keyword, idx) => {
           return (
             <ListItem
               key={keyword.id}
