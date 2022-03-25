@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import SearchListContainer from '../components/SearchListContainer';
 
 function Main(props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleVisibility = (action) => {
+    if (action === 'show') {
+      document.querySelector('.search-list-container').style.visibility =
+        'visible';
+    } else if (action === 'hide') {
+      setTimeout(() => {
+        document.querySelector('.search-list-container').style.visibility =
+          'hidden';
+      }, 150);
+    }
+  };
+
   return (
     <Body>
       <Container>
@@ -12,8 +26,11 @@ function Main(props) {
           <br />
           온라인으로 참여하기
         </Title>
-        <SearchBar />
-        <SearchListContainer />
+        <SearchBar
+          setIsLoading={setIsLoading}
+          handleVisibility={handleVisibility}
+        />
+        <SearchListContainer isLoading={isLoading} />
       </Container>
     </Body>
   );
