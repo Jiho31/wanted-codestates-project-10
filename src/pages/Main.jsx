@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import SearchListContainer from '../components/SearchListContainer';
@@ -11,8 +11,10 @@ function Main(props) {
       document.querySelector('.search-list-container').style.visibility =
         'visible';
     } else if (action === 'hide') {
-      document.querySelector('.search-list-container').style.visibility =
-        'hidden';
+      setTimeout(() => {
+        document.querySelector('.search-list-container').style.visibility =
+          'hidden';
+      }, 150);
     }
   };
 

@@ -16,7 +16,6 @@ const SearchBar = React.memo(function SearchBar({
   const dispatch = useDispatch();
 
   const inputChangeHandler = (e) => {
-    console.log(e.target.value);
     dispatch(setSearchKeyword(e.target.value));
 
     // 디바운싱 적용한 api 호출 함수 실행 ?
@@ -44,8 +43,8 @@ const SearchBar = React.memo(function SearchBar({
       })
       .catch((err) => console.error(err));
 
-    setIsLoading(false);
     dispatch(setRecommendedList(recommendedKeywords));
+    setIsLoading(false);
     console.log('실행');
   };
 
@@ -54,6 +53,13 @@ const SearchBar = React.memo(function SearchBar({
   };
   const blurEventHandler = () => {
     handleVisibility('hide');
+  };
+  const clickSearchBtnHandler = () => {
+    if (keyword !== '') {
+      window.location.href = `https://clinicaltrialskorea.com/studies?condition=${encodeURI(
+        keyword,
+      )}`;
+    }
   };
 
   return (
@@ -71,7 +77,7 @@ const SearchBar = React.memo(function SearchBar({
             placeholder="질환명을 입력해 주세요."
           />
         </InputWrapper>
-        <SearchButton>검색</SearchButton>
+        <SearchButton onClick={clickSearchBtnHandler}>검색</SearchButton>
       </div>
     </Container>
   );

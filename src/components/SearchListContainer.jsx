@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import ListItem from './ListItem';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setSearchKeyword } from '../modules/search';
 
 function SearchListContainer({ isLoading }) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef();
   const recommendedList = useSelector((state) => state.search.recommendedList);
+  const dispatch = useDispatch();
 
   const keypressEventHandler = (e) => {
     if (activeIndex === -1 && e.key === 'ArrowUp') return;
@@ -31,8 +34,11 @@ function SearchListContainer({ isLoading }) {
           : currIdx - recommendedList.length + 1;
       });
     } else if (e.key === 'Enter') {
-      console.log('Enter pressed');
-      // input 요소의 값 변경하고 포커스 맞춰주기 (?)
+      // input 요소의 값 변경
+      if (containerRef.current.style.visibility === 'visible') {
+        dispatch(setSearchKeyword(recommendedList[activeIndex].name));
+        containerRef.current.style.visibility = 'hidden';
+      }
     }
   };
 
