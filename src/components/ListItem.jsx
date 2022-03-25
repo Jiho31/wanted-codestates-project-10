@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Search } from '../assets/search-icon.svg';
+import { useDispatch } from 'react-redux';
+import { setSearchKeyword } from '../modules/search';
 
 const ListItem = React.memo(function ListItem({
   keyword,
@@ -8,15 +10,9 @@ const ListItem = React.memo(function ListItem({
   setActiveIndex,
   index,
 }) {
-  useEffect(() => {
-    // console.log(index + 'list item is rendered');
-    // console.log(isActive);
-  });
+  const dispatch = useDispatch();
 
   const mouseEnterHandler = (e) => {
-    // console.log(e.target.querySelectorAll('p')[0].textContent);
-    // console.log(e.target.querySelectorAll('.hidden-index')[0].textContent);
-
     setActiveIndex(
       e.target.querySelectorAll('.hidden-index')[0].textContent * 1,
     );
@@ -24,6 +20,14 @@ const ListItem = React.memo(function ListItem({
 
   const clickEventHandler = (e) => {
     // input의 keyword 값 바꾸기!
+    const targetKeyword = e.target.querySelectorAll('p')[0].textContent;
+    dispatch(setSearchKeyword(targetKeyword));
+
+    setTimeout(() => {
+      window.location.href = `https://clinicaltrialskorea.com/studies?condition=${encodeURI(
+        targetKeyword,
+      )}`;
+    }, 300);
   };
 
   return (
