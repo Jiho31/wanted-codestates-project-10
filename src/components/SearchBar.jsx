@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../assets/search-icon.svg';
 import axios from 'axios';
@@ -10,21 +10,23 @@ const SearchBar = React.memo(function SearchBar({
   setIsLoading,
   handleVisibility,
 }) {
-  const inputRef = useRef();
-  let timerID;
   const keyword = useSelector((state) => state.search.keyword);
   const dispatch = useDispatch();
+  let timerID;
 
-  const inputChangeHandler = (e) => {
+  const inputChangeHandler = useCallback((e) => {
     dispatch(setSearchKeyword(e.target.value));
 
-    // 디바운싱 적용한 api 호출 함수 실행 ?
+    handleVisibility('show');
+
+    // 디바운싱 적용한 api 호출 함수 실행
     clearTimeout(timerID);
 
     timerID = setTimeout(() => {
       fetchKeywordAPI(e.target.value);
-    }, 250);
-  };
+      // console.log('api 호출');
+    }, 350);
+  }, []);
 
   const fetchKeywordAPI = async (newKeyword) => {
     setIsLoading(true);
@@ -39,13 +41,12 @@ const SearchBar = React.memo(function SearchBar({
       .get(`${PROXY}/api/v1/search-conditions/?name=${newKeyword}`)
       .then((res) => res.data)
       .then((data) => {
-        return data.slice(0, 8);
+        return data;
       })
       .catch((err) => console.error(err));
 
     dispatch(setRecommendedList(recommendedKeywords));
     setIsLoading(false);
-    // console.log('실행');
   };
 
   const focusEventHandler = () => {
@@ -68,7 +69,6 @@ const SearchBar = React.memo(function SearchBar({
         <InputWrapper>
           <SearchIcon fill="#32383E" />
           <SearchInput
-            ref={inputRef}
             value={keyword}
             onChange={inputChangeHandler}
             onFocus={focusEventHandler}

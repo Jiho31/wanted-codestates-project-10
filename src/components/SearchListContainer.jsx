@@ -8,7 +8,9 @@ import { setSearchKeyword } from '../modules/search';
 function SearchListContainer({ isLoading }) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef();
-  const recommendedList = useSelector((state) => state.search.recommendedList);
+  const recommendedList = useSelector((state) =>
+    state.search.recommendedList.slice(0, 8),
+  );
   const dispatch = useDispatch();
 
   const keypressEventHandler = (e) => {
