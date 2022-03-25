@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../assets/search-icon.svg';
 import axios from 'axios';
 import { PROXY } from '../utils/Utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchKeyword, setRecommendedList } from '../modules/search';
+// import { useGetRecommendsByKeyword } from '../services/recommendations';
 
 const SearchBar = React.memo(function SearchBar({
   setIsLoading,
@@ -13,6 +14,11 @@ const SearchBar = React.memo(function SearchBar({
   const keyword = useSelector((state) => state.search.keyword);
   const dispatch = useDispatch();
   let timerID;
+  // const timerID = useRef();
+  // const [skip, setSkip] = useState(true);
+  // const { data, error, isFetching } = useGetRecommendsByKeyword(keyword, {
+  //   skip});
+  // });
 
   const inputChangeHandler = useCallback((e) => {
     dispatch(setSearchKeyword(e.target.value));
@@ -27,6 +33,19 @@ const SearchBar = React.memo(function SearchBar({
       // console.log('api 호출');
     }, 350);
   }, []);
+  // const inputChangeHandler = (e) => {
+  //   dispatch(setSearchKeyword(e.target.value));
+
+  //   handleVisibility('show');
+
+  //   // 디바운싱 적용한 api 호출 함수 실행
+  //   clearTimeout(timerID.current);
+
+  //   timerID.current = setTimeout(() => {
+  //     setSkip(false);
+  //     // console.log('api 호출');
+  //   }, 350);
+  // };
 
   const fetchKeywordAPI = async (newKeyword) => {
     setIsLoading(true);

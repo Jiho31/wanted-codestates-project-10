@@ -1,12 +1,61 @@
-// action
-const SET_SEARCH_KEYWORD = 'search/SET_SEARCH_KEYWORD';
-const SET_RECOMMENDED_LIST = 'search/SET_RECOMMENDED_LIST';
+// import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
 
 // 기본 값
 const initialState = {
   keyword: '',
   recommendedList: [],
 };
+
+// const setSearchKeyword = createAction(
+//   'search/set-search-keyword',
+//   (keyword) => {
+//     return {
+//       keyword,
+//     };
+//   },
+// );
+// const setRecommendedList = createAction(
+//   'search/set-recommended-list',
+//   (data) => {
+//     return { data };
+//   },
+// );
+
+// const searchReducer = createReducer(initialState, (builder) => {
+//   builder
+//     .addCase(setSearchKeyword, (state, action) => {
+//       state.keyword = action.keyword;
+//     })
+//     .addCase(setRecommendedList, (state, action) => {
+//       state.recommendedList = action.data;
+//     })
+//     .addDefaultCase((state) => {
+//       return state;
+//     });
+// });
+
+/*
+const searchSlice = createSlice({
+  name: 'search',
+  initialState: initialState,
+  reducers: {
+    setSearchKeyword(state, action) {
+      state.keyword = action.keyword;
+    },
+    setRecommendedList(state, action) {
+      state.recommendedList = action.data;
+    },
+  },
+});
+
+const { actions, reducer } = searchSlice;
+export const { setSearchKeyword, setRecommendedList } = actions;
+export default reducer;
+*/
+
+// action
+const SET_SEARCH_KEYWORD = 'search/SET_SEARCH_KEYWORD';
+const SET_RECOMMENDED_LIST = 'search/SET_RECOMMENDED_LIST';
 
 // action 생성 함수
 export const setSearchKeyword = (keyword) => ({
