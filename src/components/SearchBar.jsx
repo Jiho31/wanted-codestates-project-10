@@ -45,7 +45,7 @@ const SearchBar = React.memo(function SearchBar({
 
     dispatch(setRecommendedList(recommendedKeywords));
     setIsLoading(false);
-    console.log('실행');
+    // console.log('실행');
   };
 
   const focusEventHandler = () => {
